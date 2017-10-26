@@ -35,6 +35,7 @@ done
 echo "Copying in rzsh"
 if [[ ! $dryrun ]]; then
     rzsh_home="$HOME/.config/rzsh"
+    rm -rf $rzsh_home
     mkdir -p $rzsh_home
-    cp -r ./.config/rzsh $rzsh_home
+    cp -r ./.config/rzsh/* $rzsh_home
 fi
