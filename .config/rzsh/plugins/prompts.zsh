@@ -15,13 +15,18 @@ get_git_prompt() {
 
 
 git_info_callback() {
-    GIT_PROMPT="$3"
+    if [[ $3 =~ "[0-9]\.[0-9]" ]]; then
+        GIT_PROMPT=""
+    else
+        GIT_PROMPT="$3"
+    fi
     zle && zle reset-prompt
 }
 
 
 async_git() {
-    async_job prompt_worker git_super_status
+    GIT_PROMPT=""
+    async_job prompt_worker git_super_status "$(pwd)"
 }
 
 

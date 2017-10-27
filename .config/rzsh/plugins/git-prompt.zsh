@@ -18,14 +18,14 @@ function preexec_update_git_vars() {
 
 function precmd_update_git_vars() {
     if [ -n "$__EXECUTED_GIT_COMMAND" ] || [ ! -n "$ZSH_THEME_GIT_PROMPT_CACHE" ]; then
-        update_current_git_vars
+        update_current_git_vars $1
         unset __EXECUTED_GIT_COMMAND
     fi
 }
 
-chpwd_functions+=(chpwd_update_git_vars)
-precmd_functions+=(precmd_update_git_vars)
-preexec_functions+=(preexec_update_git_vars)
+#chpwd_functions+=(chpwd_update_git_vars)
+#precmd_functions+=(precmd_update_git_vars)
+#preexec_functions+=(preexec_update_git_vars)
 
 
 ## Function definitions
@@ -33,7 +33,7 @@ function update_current_git_vars() {
     unset __CURRENT_GIT_STATUS
 
     local gitstatus="$__GIT_PROMPT_DIR/gitstatus.py"
-    _GIT_STATUS=$(python ${gitstatus})
+    _GIT_STATUS=$(python ${gitstatus} $1)
      __CURRENT_GIT_STATUS=("${(@s: :)_GIT_STATUS}")
     GIT_BRANCH=$__CURRENT_GIT_STATUS[1]
     GIT_AHEAD=$__CURRENT_GIT_STATUS[2]
@@ -45,7 +45,8 @@ function update_current_git_vars() {
 }
 
 git_super_status() {
-    precmd_update_git_vars
+    #precmd_update_git_vars $1
+    update_current_git_vars $1
     if [ -n "$__CURRENT_GIT_STATUS" ]; then
       STATUS="$ZSH_THEME_GIT_PROMPT_PREFIX$ZSH_THEME_GIT_PROMPT_BRANCH$GIT_BRANCH%{${reset_color}%}"
       if [ "$GIT_BEHIND" -ne "0" ]; then

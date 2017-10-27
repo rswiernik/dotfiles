@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from __future__ import print_function
 
+import os
 import sys
 import re
 import shlex
@@ -27,7 +28,8 @@ def get_tagname_or_hash():
         return hash_
     return None
 
-
+print(sys.argv, file=sys.stderr)
+os.chdir(sys.argv[1])
 # `git status --porcelain --branch` can collect all information
 # branch, remote_branch, untracked, staged, changed, conflicts, ahead, behind
 po = Popen(['git', 'status', '--porcelain', '--branch'], stdout=PIPE, stderr=PIPE)
