@@ -9,6 +9,7 @@ fi
 
 source $RZSH_HOME/plugins/prompts.zsh
 source $RZSH_HOME/global_settings.zsh
+source $RZSH_HOME/functions.zsh
 
 # Load in all of our configs
 for config ($RZSH_HOME/configs/*.zsh); do

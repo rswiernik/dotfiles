@@ -9,15 +9,11 @@ export PATH="$PATH:$(go env GOPATH)/bin"
 
 export EDITOR='vim'
 
-alias cgrep="grep --color=always"
-alias colorgrep="cgrep"
-alias dush="du -sh"
-alias lsdu="dush ./*"
-
-function findhere() {
-    find ./ -name "*$@*"
-}
-
-function searchzshhistory() {
-    grep -rn "$@" ~/.zsh_history
+# Functions for me!
+function vardonmount() {
+    mount_location="/home/$USERNAME/tmp/vardon"
+    if [[ ! -d $mount_location ]]; then
+        mkdir -p $mount_location
+    fi
+    sudo mount -t cifs -o username=$USERNAME //vardon/media $mount_location
 }
