@@ -41,3 +41,5 @@ highlight colorcolumn ctermbg=6 ctermfg=black
 
 highlight trailing_whitespace ctermbg=red guibg=red
 match trailing_whitespace /\s\+$/
+
+let g:go_version_warning = 0

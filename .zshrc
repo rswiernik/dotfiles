@@ -1,11 +1,15 @@
 RZSH_HOME="$HOME/.config/rzsh"
 source "$RZSH_HOME/rzsh.zsh"
 
-# Get your rustlang on
-source $HOME/.cargo/env
+if [[ -d $HOME/.cargo ]]; then
+    # Get your rustlang on
+    source $HOME/.cargo/env
+fi
 
-# Get your golang on
-export PATH="$PATH:$(go env GOPATH)/bin"
+if [[ /usr/bin/which go ]]; then
+    # Get your golang on
+    export PATH="$PATH:$(go env GOPATH)/bin"
+fi
 
 export EDITOR='vim'
 

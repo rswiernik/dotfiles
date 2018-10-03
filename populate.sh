@@ -39,3 +39,12 @@ if [[ ! $dryrun ]]; then
     mkdir -p $rzsh_home
     cp -r ./.config/rzsh/* $rzsh_home
 fi
+
+read -p "Would you like to install Vundle? [y/n]" v_choice
+if [ ${v_choice} = "y" ]; then
+    echo "Installing Vundle!"
+    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+    vim +PluginInstall +qall
+else
+    echo "Skipping Vundle install"
+fi
