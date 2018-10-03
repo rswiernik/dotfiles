@@ -25,7 +25,7 @@ git_info_callback() {
 
 
 async_git() {
-    GIT_PROMPT=""
+    GIT_PROMPT="(...)"
     async_job prompt_worker git_super_status "$(pwd)"
 }
 
