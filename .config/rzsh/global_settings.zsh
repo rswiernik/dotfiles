@@ -3,6 +3,8 @@ setopt nobeep
 
 bindkey -v
 
+R_MAX_PROMPT_LEN=20
+
 # autoload zkbd
 # function zkbd_file() {
 #     [[ -f ~/.zkbd/${TERM}-${VENDOR}-${OSTYPE} ]] && printf '%s' ~/".zkbd/${TERM}-${VENDOR}-${OSTYPE}" && return 0

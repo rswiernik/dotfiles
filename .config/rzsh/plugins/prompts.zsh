@@ -42,6 +42,13 @@ function virtualenv_info {
     [ $VIRTUAL_ENV ] && echo '('`basename $VIRTUAL_ENV`') '
 }
 
+function trimmed_pwd {
+    CDW="${PWD/#$HOME/~}"
+    if [[ $(echo "${#CDW}") -gt ${R_MAX_PROMPT_LEN} ]]; then
+        CDW="..${CDW: -${R_MAX_PROMPT_LEN}}"
+    fi
+    echo $CDW
+}
 
-PROMPT='[%{$fg[yellow]%}%n@%m%{$reset_color%}] %{$fg_bold[green]%}${PWD/#$HOME/~}%{$reset_color%}$(virtualenv_info)$(prompt_char) '
+PROMPT='[%{$fg[yellow]%}%n@%m%{$reset_color%}] %{$fg_bold[green]%}$(trimmed_pwd)%{$reset_color%}$(virtualenv_info)$(prompt_char) '
 RPROMPT='$(get_git_prompt)'
