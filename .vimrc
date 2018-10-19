@@ -29,7 +29,8 @@ set scrolloff=5
 set autoindent
 "set mouse=a
 
-colorscheme desert
+"colorscheme desert
+colorscheme elflord
 set hlsearch
 
 set laststatus=2

@@ -2,6 +2,7 @@ setopt prompt_subst
 source $RZSH_HOME/plugins/async.zsh
 source $RZSH_HOME/plugins/git-prompt.zsh
 
+TMP="${HOME}/._rzsh_prompt_worker_stub"
 
 async_init
 async_start_worker prompt_worker -n
@@ -21,12 +22,16 @@ git_info_callback() {
         GIT_PROMPT="$3"
     fi
     zle && zle reset-prompt
+    rm $TMP
 }
 
 
 async_git() {
     GIT_PROMPT="(...)"
-    async_job prompt_worker git_super_status "$(pwd)"
+    if [[ ! -f $TMP ]]; then
+        touch $TMP
+        async_job prompt_worker git_super_status "$(pwd)"
+    fi
 }
 
 
