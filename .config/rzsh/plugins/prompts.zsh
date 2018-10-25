@@ -2,6 +2,8 @@ setopt prompt_subst
 source $RZSH_HOME/plugins/async.zsh
 source $RZSH_HOME/plugins/git-prompt.zsh
 
+# This is actually really jank and brittle
+# TODO: Replace with more robust locking system?
 TMP="${HOME}/._rzsh_prompt_worker_stub"
 
 async_init
@@ -55,5 +57,13 @@ function trimmed_pwd {
     echo $CDW
 }
 
-PROMPT='[%{$fg[yellow]%}%n@%m%{$reset_color%}] %{$fg_bold[green]%}$(trimmed_pwd)%{$reset_color%}$(virtualenv_info)$(prompt_char) '
+function get_user_machine {
+    if [[ -n $SSH_CLIENT ]] || [[ -n $SSH_TTY ]]; then
+        echo "%n@%m"
+    else
+        echo "%n"
+    fi
+}
+
+PROMPT='[%{$fg[yellow]%}$(get_user_machine)%{$reset_color%}] %{$fg_bold[green]%}$(trimmed_pwd)%{$reset_color%}$(virtualenv_info)$(prompt_char) '
 RPROMPT='$(get_git_prompt)'
