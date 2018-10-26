@@ -48,6 +48,3 @@ if [ ${v_choice} = "y" ]; then
 else
     echo "Skipping Vundle install"
 fi
-
-echo "Exec'ing your shell for you :thumbs_up:"
-exec $SHELL
