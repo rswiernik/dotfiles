@@ -59,11 +59,11 @@ function trimmed_pwd {
 
 function get_user_machine {
     if [[ -n $SSH_CLIENT ]] || [[ -n $SSH_TTY ]]; then
-        echo "%n@%m"
-    else
-        echo "%n"
+        # echo "%n@%m"
+        echo "[%{$fg[yellow]%}%m%{$reset_color%}] "
     fi
 }
 
-PROMPT='[%{$fg[yellow]%}$(get_user_machine)%{$reset_color%}] %{$fg_bold[green]%}$(trimmed_pwd)%{$reset_color%}$(virtualenv_info)$(prompt_char) '
+# PROMPT='[%{$fg[yellow]%}$(get_user_machine)%{$reset_color%}] %{$fg_bold[green]%}$(trimmed_pwd)%{$reset_color%}$(virtualenv_info)$(prompt_char) '
+PROMPT='$(get_user_machine)%{$fg_bold[green]%}$(trimmed_pwd)%{$reset_color%}$(virtualenv_info)$(prompt_char) '
 RPROMPT='$(get_git_prompt)'
