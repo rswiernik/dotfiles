@@ -2,9 +2,10 @@ setopt prompt_subst
 source $RZSH_HOME/plugins/async.zsh
 source $RZSH_HOME/plugins/git-prompt.zsh
 
-# This is actually really jank and brittle
-# TODO: Replace with more robust locking system?
-TMP="${HOME}/._rzsh_prompt_worker_stub"
+# This is way less brittle, but should probably be pulled out as a higher level config?
+# TODO: Figure out if this belongs here
+WORKER_TEMP_STUB="${HOME}/._rzsh_prompt_worker_stub_$(od -vAn -N4 -tu8 < /dev/urandom | tr -d "[:space:]")"
+trap "if [[ -f $WORKER_TEMP_STUB ]]; then rm ${WORKER_TEMP_STUB}; fi" EXIT
 
 async_init
 async_start_worker prompt_worker -n
@@ -24,14 +25,14 @@ git_info_callback() {
         GIT_PROMPT="$3"
     fi
     zle && zle reset-prompt
-    rm $TMP
+    rm $WORKER_TEMP_STUB
 }
 
 
 async_git() {
     GIT_PROMPT="(...)"
-    if [[ ! -f $TMP ]]; then
-        touch $TMP
+    if [[ ! -f $WORKER_TEMP_STUB ]]; then
+        touch $WORKER_TEMP_STUB
         async_job prompt_worker git_super_status "$(pwd)"
     fi
 }
