@@ -30,7 +30,14 @@ git_info_callback() {
 
 
 async_git() {
-    GIT_PROMPT="(...)"
+    # If in a git directory, show the pending git prompt
+    if [[ -d .git ]] || [[ $(git rev-parse --is-inside-work-tree 2>/dev/null) = "true" ]]; then
+        GIT_PROMPT="(...)"
+    # If not, don't show anything
+    else;
+        GIT_PROMPT=""
+    fi
+
     if [[ ! -f $WORKER_TEMP_STUB ]]; then
         touch $WORKER_TEMP_STUB
         async_job prompt_worker git_super_status "$(pwd)"
