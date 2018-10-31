@@ -46,3 +46,5 @@ highlight trailing_whitespace ctermbg=red guibg=red
 match trailing_whitespace /\s\+$/
 
 let g:go_version_warning = 0
+autocmd FileType go nmap <silent> <Leader>d <Plug>(go-def-tab)
+
