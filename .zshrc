@@ -13,6 +13,10 @@ fi
 
 export EDITOR='vim'
 
+# ------
+RZSH_LOCAL_CONF=$HOME/.rzsh_local
+[[ -f $RZSH_LOCAL_CONF ]] && source $RZSH_LOCAL_CONF
+
 mount_location="/home/$USERNAME/tmp/vardon"
 # Functions for me!
 function vardonmount() {
