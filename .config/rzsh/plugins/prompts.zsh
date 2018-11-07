@@ -66,7 +66,7 @@ function trimmed_pwd {
 }
 
 function get_user_machine {
-    if [[ -n $SSH_CLIENT ]] || [[ -n $SSH_TTY ]]; then
+    if [[ -n $SSH_CLIENT ]] || [[ -n $SSH_TTY ]] || [[ -n $SSH_AUTH_SOCK ]]; then
         # echo "%n@%m"
         echo "[%{$fg[yellow]%}%m%{$reset_color%}] "
     fi
