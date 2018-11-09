@@ -58,7 +58,7 @@ if [[ ! $dryrun ]]; then
     cp -r ./.config/rzsh/* $rzsh_home
 fi
 
-if [[ ! $dryrun ]]; then
+if [[ ! -d "$HOME/.vim/bundle/Vundle.vim" ]] && [[ ! $dryrun ]]; then
     read -p "Would you like to install Vundle? [y/n]" v_choice
     if [[ ${v_choice} = "y" ]]; then
         echo "Installing Vundle!"
@@ -68,5 +68,5 @@ if [[ ! $dryrun ]]; then
         echo "Skipping Vundle install"
     fi
 else
-    echo "Skipping vundle install because of dryrun"
+    echo "Vundle already installed or dryrun, skipping"
 fi
