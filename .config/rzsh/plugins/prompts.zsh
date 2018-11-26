@@ -13,6 +13,8 @@ async_register_callback prompt_worker git_info_callback
 
 
 GIT_PROMPT=''
+CACHED_GIT_PROMPT=''
+GIT_PLACEHOLDER="(...)"
 get_git_prompt() {
     echo "$GIT_PROMPT"
 }
@@ -24,6 +26,7 @@ git_info_callback() {
     else
         GIT_PROMPT="$3"
     fi
+    CACHED_GIT_PROMPT=${GIT_PROMPT}
     zle && zle reset-prompt
     rm $WORKER_TEMP_STUB
 }
@@ -32,7 +35,11 @@ git_info_callback() {
 async_git() {
     # If in a git directory, show the pending git prompt
     if [[ -d .git ]] || [[ $(git rev-parse --is-inside-work-tree 2>/dev/null) = "true" ]]; then
-        GIT_PROMPT="(...)"
+        if [[ -z ${CACHED_GIT_PROMPT} ]]; then
+            GIT_PROMPT="${GIT_PLACEHOLDER}"
+        else;
+            GIT_PROMPT="?${CACHED_GIT_PROMPT}"
+        fi
     # If not, don't show anything
     else;
         GIT_PROMPT=""
