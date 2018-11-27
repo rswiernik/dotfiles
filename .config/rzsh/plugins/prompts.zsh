@@ -1,20 +1,29 @@
+# My prompt setup! This has been set up for me, but could be modified easily.
+# You get ssh detection for showing the machine name in the prompt, a pleasant pwd display and async
+# git information in the reverse prompt. This information is cached, and works well in most cases,
+# however with any cached information, has a tendency for being stale when doing certain operations.
+# (eg. changing branches) Here's an example of what this looks like in practice:
+#
+# [rswiernik-mbp] ..memcache/deployments❯                                                (master|✔)
+#
+
 setopt prompt_subst
 source $RZSH_HOME/plugins/async.zsh
 source $RZSH_HOME/plugins/git-prompt.zsh
 
-# This is way less brittle, but should probably be pulled out as a higher level config?
-# TODO: Figure out if this belongs here
+# TODO: Figure out if this worker stub belongs here (Push down into async or up to higher level)
 WORKER_TEMP_STUB="${HOME}/._rzsh_prompt_worker_stub_$(od -vAn -N4 -tu8 < /dev/urandom | tr -d "[:space:]")"
+# This cleans up the worker stub file on shell exit. This is useful when you exit before a worker returns
 trap "if [[ -f $WORKER_TEMP_STUB ]]; then rm ${WORKER_TEMP_STUB}; fi" EXIT
 
 async_init
 async_start_worker prompt_worker -n
 async_register_callback prompt_worker git_info_callback
 
-
 GIT_PROMPT=''
 CACHED_GIT_PROMPT=''
 GIT_PLACEHOLDER="(...)"
+
 get_git_prompt() {
     echo "$GIT_PROMPT"
 }
