@@ -50,6 +50,7 @@ for conf in $confs; do
     [[ ! $dryrun ]] && cp ./$conf $copy_dest
 done
 
+## Copy rzsh configs ##
 echo "Copying in rzsh"
 if [[ ! $dryrun ]]; then
     rzsh_home="$copy_dest/.config/rzsh"
@@ -57,6 +58,26 @@ if [[ ! $dryrun ]]; then
     mkdir -p $rzsh_home
     cp -r ./.config/rzsh/* $rzsh_home
 fi
+
+## Copy awesome configs ##
+if [[ ! $dryrun ]] && [[ -d "/etc/xdg/awesome" ]]; then
+    read -p "I see you have Awesome installed, Would you like to install the configs? [y/n]" v_choice
+    if [[ ${v_choice} = "y" ]]; then
+        if [[ $(which apt 2> /dev/null) ]]; then
+            sudo apt install xautolock slock
+        elif [[ $(which dnf 2> /dev/null) ]]; then
+            sudo dnf install xautolock slock
+        else
+            echo "Not sure how you install things, skipping installs for now"
+        fi
+
+        echo "Installing Awesome configs"
+        awesome_home="$copy_dest/.config/awesome"
+        mkdir -p $awesome_home
+        cp -r ./.config/awesome/* $awesome_home
+    fi
+fi
+
 
 if [[ ! -d "$copy_dest/.vim/bundle/Vundle.vim" ]] && [[ ! $dryrun ]]; then
     read -p "Would you like to install Vundle? [y/n]" v_choice
