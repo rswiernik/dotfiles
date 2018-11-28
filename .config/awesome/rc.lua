@@ -41,6 +41,7 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
+<<<<<<< HEAD
 -- default_theme = "default/theme.lua"
 -- beautiful.init(gears.filesystem.get_themes_dir() .. default_theme)
 custom_theme = "themes/zenburn_custom/theme.lua"
@@ -49,6 +50,12 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. custom_theme)
 -- This is used later as the default terminal and editor to run.
 -- terminal = "xterm"
 terminal = "gnome-terminal"
+=======
+beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+
+-- This is used later as the default terminal and editor to run.
+terminal = "xterm"
+>>>>>>> Add awesome to configs
 editor = os.getenv("EDITOR") or "vi"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -104,6 +111,7 @@ myawesomemenu = {
    { "restart", awesome.restart },
    { "quit", function() awesome.quit() end}
 }
+<<<<<<< HEAD
 powermenu = {
     { "reboot", "reboot" },
     { "poweroff", "poweroff" },
@@ -111,6 +119,10 @@ powermenu = {
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
                                     { "power", powermenu },
+=======
+
+mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
+>>>>>>> Add awesome to configs
                                     { "open terminal", terminal }
                                   }
                         })
