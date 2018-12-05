@@ -20,4 +20,3 @@ source $RZSH_HOME/functions.zsh
 
 # Pull in the theme!
 source $(ls $RZSH_HOME/themes/$RZSH_THEME/*)
-
