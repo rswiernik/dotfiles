@@ -17,3 +17,5 @@ done
 
 source $RZSH_HOME/plugins/prompts.zsh
 source $RZSH_HOME/functions.zsh
+
+alias ls="ls --color=auto"
