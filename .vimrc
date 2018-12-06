@@ -52,3 +52,9 @@ match trailing_whitespace /\s\+$/
 let g:go_version_warning = 0
 autocmd FileType go nmap <silent> <Leader>d <Plug>(go-def-tab)
 
+function SetPythonOptions()
+  set filetype=python
+  set syntax=python
+endfunction
+
+autocmd BufRead,BufNewFile *.pyst call SetPythonOptions()
