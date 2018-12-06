@@ -53,7 +53,8 @@ let g:go_version_warning = 0
 autocmd FileType go nmap <silent> <Leader>d <Plug>(go-def-tab)
 
 function SetPythonOptions()
-  set filetype=python
+  " Figure out if we actually want this...
+  "set filetype=python
   set syntax=python
 endfunction
 
