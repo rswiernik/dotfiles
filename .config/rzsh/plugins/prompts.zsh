@@ -74,11 +74,22 @@ function virtualenv_info {
 }
 
 function trimmed_pwd {
-    CDW="${PWD/#$HOME/~}"
-    if [[ $(echo "${#CDW}") -gt ${R_MAX_PROMPT_LEN} ]]; then
-        CDW="..${CDW: -${R_MAX_PROMPT_LEN}}"
+    GIT_REPO=""
+    # If we're in a git directory, replace the start of the wd with nothing
+    GIT_WD="$(git rev-parse --show-toplevel 2>/dev/null)"
+    if [[ -n $GIT_WD ]]; then
+        GIT_REPO="%{$fg[green]%}$(basename ${GIT_WD} 2>/dev/null)%{$fg_bold[green]%}/"
+        CWD="${PWD/#$GIT_WD/}"
+    else
+        CWD="${PWD/#$HOME/~}"
     fi
-    echo $CDW
+
+    if [[ $(echo "${#CWD}") -gt ${R_MAX_PROMPT_LEN} ]]; then
+        CWD="..${CWD: -${R_MAX_PROMPT_LEN}}"
+    fi
+
+    CWD="${GIT_REPO}${CWD}"
+    echo $CWD
 }
 
 function get_user_machine {
