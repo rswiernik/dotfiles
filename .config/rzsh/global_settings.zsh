@@ -7,6 +7,7 @@ R_MAX_PROMPT_LEN=20
 
 PATH="$PATH:/home/rswiernik/.local/bin"
 
+[[ -n $RZSH_THEME ]] || RZSH_THEME="default"
 
 # autoload zkbd
 # function zkbd_file() {
