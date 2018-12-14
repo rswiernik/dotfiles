@@ -74,31 +74,33 @@ function virtualenv_info {
 }
 
 function trimmed_pwd {
+    CWD="%{$fg_bold[green]%}"
     GIT_REPO=""
     # If we're in a git directory, replace the start of the wd with nothing
     GIT_WD="$(git rev-parse --show-toplevel 2>/dev/null)"
     if [[ -n $GIT_WD ]]; then
-        GIT_REPO="%{$fg[green]%}$(basename ${GIT_WD} 2>/dev/null)%{$fg_bold[green]%}|"
-        CWD="${PWD/#$GIT_WD/}"
+        GIT_REPO="%{$fg[green]%}$(basename ${GIT_WD} 2>/dev/null)%{$fg_bold[green]%} "
+        WD="${PWD/#$GIT_WD/}"
+        WD="${WD: 1}"
     else
-        CWD="${PWD/#$HOME/~}"
+        WD="${PWD/#$HOME/~}"
     fi
 
-    if [[ $(echo "${#CWD}") -gt ${R_MAX_PROMPT_LEN} ]]; then
-        CWD="..${CWD: -${R_MAX_PROMPT_LEN}}"
+    if [[ $(echo "${#WD}") -gt ${R_MAX_PROMPT_LEN} ]]; then
+        WD="..${WD: -${R_MAX_PROMPT_LEN}}"
     fi
 
-    CWD="${GIT_REPO}${CWD}"
+    CWD="${CWD}${GIT_REPO}${WD}%{$reset_color%}"
     echo $CWD
 }
 
 function get_user_machine {
     if [[ -n $SSH_CLIENT ]] || [[ -n $SSH_TTY ]] || [[ -n $SSH_AUTH_SOCK ]]; then
         # echo "%n@%m"
-        echo "[%{$fg[yellow]%}%m%{$reset_color%}] "
+        echo "[%{$fg[yellow]%}%m%{$reset_color%}]"
     fi
 }
 
 # PROMPT='[%{$fg[yellow]%}$(get_user_machine)%{$reset_color%}] %{$fg_bold[green]%}$(trimmed_pwd)%{$reset_color%}$(virtualenv_info)$(prompt_char) '
-PROMPT='$(get_user_machine)%{$fg_bold[green]%}$(trimmed_pwd)%{$reset_color%}$(virtualenv_info)$(prompt_char) '
+PROMPT='$(get_user_machine) $(trimmed_pwd)$(virtualenv_info)$(prompt_char) '
 RPROMPT='$(get_git_prompt)'
