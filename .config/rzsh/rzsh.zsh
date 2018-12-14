@@ -15,7 +15,9 @@ for config ($RZSH_HOME/configs/*.zsh); do
     source $config
 done
 
-source $RZSH_HOME/plugins/prompts.zsh
+# Pull in all the utilities that we provide through rzsh
 source $RZSH_HOME/functions.zsh
 
-alias ls="ls --color=auto"
+# Pull in the theme!
+source $(ls $RZSH_HOME/themes/$RZSH_THEME/*)
+
