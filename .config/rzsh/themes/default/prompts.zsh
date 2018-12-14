@@ -78,7 +78,7 @@ function trimmed_pwd {
     # If we're in a git directory, replace the start of the wd with nothing
     GIT_WD="$(git rev-parse --show-toplevel 2>/dev/null)"
     if [[ -n $GIT_WD ]]; then
-        GIT_REPO="%{$fg[green]%}$(basename ${GIT_WD} 2>/dev/null)%{$fg_bold[green]%}/"
+        GIT_REPO="%{$fg[green]%}$(basename ${GIT_WD} 2>/dev/null)%{$fg_bold[green]%}|"
         CWD="${PWD/#$GIT_WD/}"
     else
         CWD="${PWD/#$HOME/~}"
