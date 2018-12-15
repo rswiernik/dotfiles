@@ -12,7 +12,7 @@ sleep 1
 exec xautolock \
     -locker "slock" \
     -time 5 \
-    -corners "+000" \
+    -corners "+---" \
     -cornerdelay 1 \
     -cornerredelay 1 \
     -cornersize 10 \
