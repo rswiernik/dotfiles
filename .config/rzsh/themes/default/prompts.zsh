@@ -68,7 +68,6 @@ function prompt_char {
     echo '❯'
 }
 
-
 function virtualenv_info {
     [ $VIRTUAL_ENV ] && echo '('`basename $VIRTUAL_ENV`') '
 }
@@ -94,10 +93,17 @@ function trimmed_pwd {
     echo $CWD
 }
 
+CACHED_HOST_COLOR=""
 function get_user_machine {
+    if [[ -z $CACHED_HOST_COLOR ]]; then
+        colors=('cyan' 'yellow' 'blue' 'magenta' 'red' 'white')
+        host_num_hash=$(echo $HOSTNAME | md5sum | sed 's/[a-fA-F]//g' | head -c 5)
+        CACHED_HOST_COLOR="$colors[$((${host_num_hash} % ${#colors[@]}))]"
+    fi
+
     if [[ -n $SSH_CLIENT ]] || [[ -n $SSH_TTY ]] || [[ -n $SSH_AUTH_SOCK ]]; then
         # echo "%n@%m"
-        echo "[%{$fg[yellow]%}%m%{$reset_color%}]"
+        echo "[%{$fg[${CACHED_HOST_COLOR}]%}%m%{$reset_color%}]"
     fi
 }
 
