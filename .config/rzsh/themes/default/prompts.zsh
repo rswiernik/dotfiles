@@ -103,11 +103,7 @@ function get_user_machine {
 
     if [[ -n $SSH_CLIENT ]] || [[ -n $SSH_TTY ]] || [[ -n $SSH_AUTH_SOCK ]]; then
         # echo "%n@%m"
-<<<<<<< HEAD
         echo "[%{$fg[${CACHED_HOST_COLOR}]%}%m%{$reset_color%}]"
-=======
-        echo "[%{$fg[yellow]%}%m%{$reset_color%}]"
->>>>>>> Fix prompt styling
     fi
 }
 
