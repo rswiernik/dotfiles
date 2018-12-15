@@ -41,10 +41,14 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+-- default_theme = "default/theme.lua"
+-- beautiful.init(gears.filesystem.get_themes_dir() .. default_theme)
+custom_theme = "themes/zenburn_custom/theme.lua"
+beautiful.init(gears.filesystem.get_configuration_dir() .. custom_theme)
 
 -- This is used later as the default terminal and editor to run.
-terminal = "xterm"
+-- terminal = "xterm"
+terminal = "gnome-terminal"
 editor = os.getenv("EDITOR") or "vi"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -100,8 +104,13 @@ myawesomemenu = {
    { "restart", awesome.restart },
    { "quit", function() awesome.quit() end}
 }
+powermenu = {
+    { "reboot", "reboot" },
+    { "poweroff", "poweroff" },
+}
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
+                                    { "power", powermenu },
                                     { "open terminal", terminal }
                                   }
                         })
@@ -556,6 +565,17 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 
+function volumecfg_up()
+    awful.spawn.with_shell("pactl set-sink-volume 0 '+5000'")
+end
+
+function volumecfg_down()
+    awful.spawn.with_shell("pactl set-sink-volume 0 '-5000'")
+end
+
+function volumecfg_toggle()
+    awful.spawn.with_shell("pactl set-sink-mute 0 toggle")
+end
 
 -- Lock yo shit
 awful.spawn.with_shell("~/.config/awesome/locker.sh")
@@ -566,7 +586,10 @@ globalkeys = gears.table.join(
             awful.spawn.with_shell("sync && xautolock -locknow")
         end,
         {description = "lock the screen", group = "client"}
-    )
+    ),
+    awful.key({}, "XF86AudioRaiseVolume", function() volumecfg_up() end),
+    awful.key({}, "XF86AudioLowerVolume", function() volumecfg_down() end),
+    awful.key({}, "XF86AudioMute",        function() volumecfg_toggle() end)
 )
 
 -- Set keys
