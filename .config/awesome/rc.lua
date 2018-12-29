@@ -107,8 +107,8 @@ myawesomemenu = {
 }
 
 powermenu = {
-    { "reboot", "reboot" },
     { "poweroff", "poweroff" },
+    { "reboot", "reboot" },
 }
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
