@@ -28,7 +28,7 @@ for opt in "$@"; do
 done
 
 default_backup_dir="${copy_dest}/.conf_backup"
-confs='.tmux.conf .vimrc .zshrc'
+confs='.tmux.conf .vimrc .zshrc .ssh/rc'
 
 if [[ ! $no_backup ]]; then
     if [[ $dryrun ]]; then
@@ -47,7 +47,8 @@ fi
 
 echo "Copying in configs from git repo"
 for conf in $confs; do
-    [[ ! $dryrun ]] && cp ./$conf $copy_dest
+    echo "cp ./$conf $copy_dest/$conf"
+    [[ ! $dryrun ]] && cp ./$conf $copy_dest/$conf
 done
 
 echo "Copying in rzsh"
