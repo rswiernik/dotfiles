@@ -47,7 +47,6 @@ fi
 
 echo "Copying in configs from git repo"
 for conf in $confs; do
-    echo "cp ./$conf $copy_dest/$conf"
     [[ ! $dryrun ]] && cp ./$conf $copy_dest/$conf
 done
 
