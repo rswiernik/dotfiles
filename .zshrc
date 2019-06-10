@@ -1,3 +1,5 @@
+alias ls="ls --color=auto"
+
 RZSH_HOME="$HOME/.config/rzsh"
 source "$RZSH_HOME/rzsh.zsh"
 
@@ -6,7 +8,7 @@ if [[ -d $HOME/.cargo ]]; then
     source $HOME/.cargo/env
 fi
 
-if [[ $(/usr/bin/which go) ]]; then
+if [[ -n "$(/usr/bin/which go)" ]]; then
     # Get your golang on
     export PATH="$PATH:$(go env GOPATH)/bin"
 fi
