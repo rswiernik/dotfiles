@@ -11,7 +11,7 @@ if [[ -d $HOME/.cargo ]]; then
     source $HOME/.cargo/env
 fi
 
-if [[ -n "$(/usr/bin/which go)" &>/dev/null ]]; then
+if [[ -n "$(/usr/bin/which go &>/dev/null)" ]]; then
     # Get your golang on
     export PATH="$PATH:$(go env GOPATH)/bin"
 fi
