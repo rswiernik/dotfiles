@@ -96,7 +96,7 @@ function trimmed_pwd {
 CACHED_HOST_COLOR=""
 function get_user_machine {
     sumfunc="md5sum"
-    if [[ "uname" -eq "Darwin" ]]; then sumfunc="md5" fi
+    [[ "uname" = "Darwin" ]] && sumfunc="md5"
     if [[ -z $CACHED_HOST_COLOR ]]; then
         colors=('cyan' 'yellow' 'blue' 'magenta' 'red' 'white')
         host_num_hash=$(echo $HOSTNAME | $sumfunc | sed 's/[a-fA-F]//g' | head -c 5)
