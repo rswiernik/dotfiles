@@ -1,7 +1,10 @@
 alias ls="ls --color=auto"
 
+ZSH_LOCAL="$HOME/.zshrc.local"
 RZSH_HOME="$HOME/.config/rzsh"
 source "$RZSH_HOME/rzsh.zsh"
+
+[[ -f "$ZSH_LOCAL" ]] && source $ZSH_LOCAL
 
 if [[ -d $HOME/.cargo ]]; then
     # Get your rustlang on
