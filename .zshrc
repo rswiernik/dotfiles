@@ -1,5 +1,3 @@
-alias ls="ls --color=auto"
-
 ZSH_LOCAL="$HOME/.zshrc.local"
 RZSH_HOME="$HOME/.config/rzsh"
 source "$RZSH_HOME/rzsh.zsh"
@@ -34,3 +32,8 @@ function vardonmount() {
 function vardonumount() {
     umount $mount_location
 }
+
+
+ls_color_option="--color=auto"
+[[ $R_ON_MAC ]] && ls_color_option="-G"
+alias ls="ls ${ls_color_option}"

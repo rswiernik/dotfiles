@@ -9,6 +9,10 @@ PATH="$PATH:/home/rswiernik/.local/bin"
 
 [[ -n $RZSH_THEME ]] || RZSH_THEME="default"
 
+R_ON_MAC=false
+[[ "$(uname)" = "Darwin" ]] && R_ON_MAC=true
+export $R_ON_MAC
+
 # autoload zkbd
 # function zkbd_file() {
 #     [[ -f ~/.zkbd/${TERM}-${VENDOR}-${OSTYPE} ]] && printf '%s' ~/".zkbd/${TERM}-${VENDOR}-${OSTYPE}" && return 0
