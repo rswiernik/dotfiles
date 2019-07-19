@@ -17,6 +17,7 @@ fi
 export EDITOR='vim'
 
 # ------
+# TODO: move this into rzsh configs
 RZSH_LOCAL_CONF=$HOME/.rzsh_local
 [[ -f $RZSH_LOCAL_CONF ]] && source $RZSH_LOCAL_CONF
 
