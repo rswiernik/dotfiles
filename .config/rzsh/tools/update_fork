@@ -18,12 +18,12 @@ mess "Performing update..."
 git merge upstream/master
 
 mess "Updating origin/master remotely"
-git push
+git push origin master
 
-mess "Returning to work branch \"${CUR_BRANCH}\""
-git checkout ${CUR_BRANCH}
+if [[ "${CUR_BRANCH}" != "master" ]]; then
+    mess "Returning to work branch \"${CUR_BRANCH}\""
+    git checkout ${CUR_BRANCH}
 
-if [[ "${CUR_BRANCH}" = "master" ]]; then
     mess "Updating work branch via rebase..."
     git rebase -i master
 else
