@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e
+
+source ".common_funcs"
+
+[[ -n "$(git remote | grep upstream)" ]] || ( message ${red} "Unable to find remote upstream" && exit 255 )
+
+CUR_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+pr_id="$1"
+
+mess "Fetching Pull Request: ${pr_id}"
+git fetch upstream pull/${pr_id}/head:PR-${pr_id}
+
+mess "Checking out branch: PR-${pr_id}"
+git checkout PR-${pr_id}

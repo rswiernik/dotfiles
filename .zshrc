@@ -1,7 +1,6 @@
-ZSH_LOCAL="$HOME/.zshrc.local"
-RZSH_HOME="$HOME/.config/rzsh"
-source "$RZSH_HOME/rzsh.zsh"
+source "${HOME}/.config/rzsh/rzsh.zsh"
 
+ZSH_LOCAL="$HOME/.zshrc.local"
 [[ -f "$ZSH_LOCAL" ]] && source $ZSH_LOCAL
 
 if [[ -d $HOME/.cargo ]]; then
