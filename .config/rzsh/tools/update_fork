@@ -2,30 +2,33 @@
 
 set -e
 
+rebase_branch="master"
+[[ -n $1 ]] && rebase_branch=$1
+
 source ".common_funcs"
 
 [[ -n "$(git remote | grep upstream)" ]] || ( message ${red} "Unable to find remote upstream" && exit 255 )
 
 CUR_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
-mess "Checking out master..."
-git checkout master
+mess "Checking out ${rebase_branch}..."
+git checkout ${rebase_branch}
 
-mess "Fetching upstream from upstream master..."
-git fetch upstream
+mess "Fetching upstream from upstream ${rebase_branch}..."
+git fetch upstream ${rebase_branch}
 
-mess "Performing update..."
-git merge upstream/master
+mess "Performing update of ${rebase_branch}..."
+git merge upstream/${rebase_branch}
 
-mess "Updating origin/master remotely"
-git push origin master
+mess "Updating origin/${rebase_branch} remotely"
+git push origin ${rebase_branch}
 
-if [[ "${CUR_BRANCH}" != "master" ]]; then
+if [[ "${CUR_BRANCH}" != ${rebase_branch} ]]; then
     mess "Returning to work branch \"${CUR_BRANCH}\""
     git checkout ${CUR_BRANCH}
 
-    mess "Updating work branch via rebase..."
-    git rebase -i master
+    mess "Updating work branch from ${rebase_branch} via rebase..."
+    git rebase -i ${rebase_branch}
 else
     mess "Currently on "${CUR_BRANCH}", no need to rebase..."
 fi
