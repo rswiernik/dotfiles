@@ -14,7 +14,7 @@ if isdirectory(expand('~/.vim/bundle/Vundle.vim'))
     " Nice utils for Golang
     Plugin 'fatih/vim-go'
     " Python
-    Plugin 'klen/python-mode'
+    Plugin 'python-mode/python-mode'
     " Plugins for folding
     Plugin 'Konfekt/FastFold'
     Plugin 'tmhedberg/SimpylFold' " Better folding for python

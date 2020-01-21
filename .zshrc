@@ -1,8 +1,5 @@
 source "${HOME}/.config/rzsh/rzsh.zsh"
 
-ZSH_LOCAL="$HOME/.zshrc.local"
-[[ -f "$ZSH_LOCAL" ]] && source $ZSH_LOCAL
-
 if [[ -d $HOME/.cargo ]]; then
     # Get your rustlang on
     source $HOME/.cargo/env
@@ -15,10 +12,6 @@ fi
 
 export EDITOR='vim'
 
-# ------
-# TODO: move this into rzsh configs
-RZSH_LOCAL_CONF=$HOME/.rzsh_local
-[[ -f $RZSH_LOCAL_CONF ]] && source $RZSH_LOCAL_CONF
 
 mount_location="/home/$USERNAME/tmp/vardon"
 # Functions for me!
@@ -37,3 +30,13 @@ function vardonumount() {
 ls_color_option="--color=auto"
 [[ $R_ON_MAC ]] && ls_color_option="-G"
 alias ls="ls ${ls_color_option}"
+
+
+# ------
+# TODO: move this into rzsh configs
+RZSH_LOCAL_CONF=$HOME/.rzsh_local
+[[ -f $RZSH_LOCAL_CONF ]] && source $RZSH_LOCAL_CONF
+
+# Import local machine sepecfic configs
+ZSH_LOCAL="$HOME/.zshrc.local"
+[[ -f "$ZSH_LOCAL" ]] && source $ZSH_LOCAL
