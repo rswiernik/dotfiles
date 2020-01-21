@@ -31,9 +31,7 @@ set expandtab
 set shiftwidth=4
 set scrolloff=5
 set autoindent
-"set mouse=a
 
-"colorscheme desert
 colorscheme elflord
 set hlsearch
 
@@ -43,6 +41,7 @@ highlight StatusLine ctermbg=16 ctermfg=74
 
 highlight OverLength ctermbg=6 ctermfg=black guibg=#592929
 match OverLength /\%81v.\+/
+
 set colorcolumn=100
 highlight colorcolumn ctermbg=6 ctermfg=black
 
@@ -59,3 +58,5 @@ function SetPythonOptions()
 endfunction
 
 autocmd BufRead,BufNewFile *.pyst call SetPythonOptions()
+
+set backspace=indent,eol,start
