@@ -9,7 +9,7 @@ PATH="$PATH:${HOME}/.local/bin"
 
 [[ -n $RZSH_THEME ]] || RZSH_THEME="default"
 
-R_ON_MAC=false
+R_ON_MAC=""
 [[ "$(uname)" = "Darwin" ]] && R_ON_MAC=true
 export $R_ON_MAC
 
