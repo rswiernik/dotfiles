@@ -11,7 +11,7 @@ PATH="$PATH:${HOME}/.local/bin"
 
 R_ON_MAC=""
 [[ "$(uname)" = "Darwin" ]] && R_ON_MAC=true
-export $R_ON_MAC
+export R_ON_MAC
 
 # autoload zkbd
 # function zkbd_file() {

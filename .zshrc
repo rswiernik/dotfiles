@@ -28,7 +28,7 @@ function vardonumount() {
 
 
 ls_color_option="--color=auto"
-[[ $R_ON_MAC ]] && ls_color_option="-G"
+[[ -n $R_ON_MAC ]] && ls_color_option="-G"
 alias ls="ls ${ls_color_option}"
 
 
