@@ -11,6 +11,8 @@ setopt prompt_subst
 source $RZSH_HOME/plugins/async.zsh
 source $RZSH_HOME/plugins/git-prompt.zsh
 
+### Setup for async git prompt
+# TODO: Move git prompt wrappers into theme possibly? Also collapse git prompt tools to smaller lib
 # TODO: Figure out if this worker stub belongs here (Push down into async or up to higher level)
 WORKER_TEMP_STUB="${HOME}/._rzsh_prompt_worker_stub_$(od -vAn -N4 -tu8 < /dev/urandom | tr -d "[:space:]")"
 # This cleans up the worker stub file on shell exit. This is useful when you exit before a worker returns
@@ -41,6 +43,7 @@ git_info_callback() {
 }
 
 
+# This is where we actually do the work
 async_git() {
     # If in a git directory, show the pending git prompt
     if [[ -d .git ]] || [[ $(git rev-parse --is-inside-work-tree 2>/dev/null) = "true" ]]; then
@@ -60,10 +63,11 @@ async_git() {
     fi
 }
 
-
+# Register the hook to be run precommand
 add-zsh-hook precmd async_git
 
 
+### Remaining ZSH prompt setup
 function prompt_char {
     echo '❯'
 }
