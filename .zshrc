@@ -40,3 +40,10 @@ RZSH_LOCAL_CONF=$HOME/.rzsh_local
 # Import local machine sepecfic configs
 ZSH_LOCAL="$HOME/.zshrc.local"
 [[ -f "$ZSH_LOCAL" ]] && source $ZSH_LOCAL
+
+# Pyenv Config
+if [[ -n "$(which pyenv)" ]]; then
+    export PYENV_ROOT="$HOME/.pyenv"
+    export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init -)"
+fi
