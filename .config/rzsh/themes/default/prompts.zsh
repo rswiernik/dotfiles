@@ -20,7 +20,7 @@ get_git_prompt() {
 }
 
 git_info_callback() {
-    if [[ $3 =~ "[0-9]\.[0-9]" ]]; then
+    if [[ $3 =~ "[0-9]\.[0-9]\+" ]]; then
         GIT_PROMPT=""
     else
         GIT_PROMPT="$3"

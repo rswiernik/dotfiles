@@ -3,7 +3,7 @@ import os
 import sys
 import re
 from subprocess import check_output, CalledProcessError
-from typing import List
+from typing import List, Optional
 
 
 _zsh_colors = {
@@ -30,25 +30,27 @@ def color(thing: str, color: str = 'white') -> str:
     )
 
 
-def get_tagname_or_hash():
+def get_tagname_or_hash() -> Optional[str]:
     """return tagname if exists else hash"""
-    cmd = ['git', 'log', '-1', '--format="%h%d"']
+    cmd = ['git', 'log', '-1', '--format=%h%d']
     output = check_output(cmd).decode('utf-8').strip()
-    hash_, tagname = None, None
-    # get hash
-    m = re.search('\(.*\)$', output)
-    if m:
-        hash_ = output[:m.start()-1]
-    # get tagname
-    m = re.search('tag: .*[,\)]', output)
-    if m:
-        tagname = 'tags/' + output[m.start()+len('tag: '): m.end()-1]
 
-    if tagname:
-        return tagname
-    elif hash_:
-        return hash_
-    return None
+    # TODO: FIX THIS to actually pull out the tags, etc
+    m = re.match(r'^([a-zA-Z0-9]+)\ \((.*)\)$', output)
+    if m:
+        hash = str(m.group(1))
+        tags = str(m.group(2))
+
+        if tags:
+            tags_list = tags.split(', ')
+            for item in tags_list:
+                if item.startswith('HEAD'):
+                    pass
+                elif item.startswith('tag:'):
+                    pass
+        return hash
+    else:
+        return None
 
 
 class GitStatus(object):
@@ -65,9 +67,9 @@ def parse_git_status_porcelain(status: str) -> GitStatus:
     git_status = GitStatus()
     for line in status.splitlines():
         if line.startswith('##'):
-            if re.search('Initial commit on', line[2]):
-                git_status.branch = line[2].split(' ')[-1]
-            elif re.search('no branch', line[2]):  # detached status
+            if re.search('Initial commit on', line[2:]):
+                git_status.branch = line[2:].split(' ')[-1]
+            elif re.search('no branch', line):  # detached status
                 git_status.branch = get_tagname_or_hash()
             elif len(line[2:].strip().split('...')) == 1:
                 git_status.branch = line[2:].strip()
