@@ -9,27 +9,15 @@
 
 setopt prompt_subst
 source $RZSH_HOME/plugins/async.zsh
-source $RZSH_HOME/plugins/git-prompt.zsh
-
-### Setup for async git prompt
-# TODO: Move git prompt wrappers into theme possibly? Also collapse git prompt tools to smaller lib
-# TODO: Figure out if this worker stub belongs here (Push down into async or up to higher level)
-WORKER_TEMP_STUB="${HOME}/._rzsh_prompt_worker_stub_$(od -vAn -N4 -tu8 < /dev/urandom | tr -d "[:space:]")"
-# This cleans up the worker stub file on shell exit. This is useful when you exit before a worker returns
-trap "if [[ -f $WORKER_TEMP_STUB ]]; then rm ${WORKER_TEMP_STUB}; fi" EXIT
 
 async_init
-async_start_worker prompt_worker -n
-async_register_callback prompt_worker git_info_callback
 
 GIT_PROMPT=''
-CACHED_GIT_PROMPT=''
 GIT_PLACEHOLDER="(...)"
 
 get_git_prompt() {
-    echo "$GIT_PROMPT"
+    echo -n "$GIT_PROMPT"
 }
-
 
 git_info_callback() {
     if [[ $3 =~ "[0-9]\.[0-9]" ]]; then
@@ -37,43 +25,42 @@ git_info_callback() {
     else
         GIT_PROMPT="$3"
     fi
-    CACHED_GIT_PROMPT=${GIT_PROMPT}
     zle && zle reset-prompt
     rm $WORKER_TEMP_STUB
 }
 
+git_super_status() {
+    GIT_PROMPT="$(python3 ${RZSH_HOME}/plugins/gitstatus.py $1 --zsh-escape)"
+    echo ${GIT_PROMPT}
+}
 
 # This is where we actually do the work
-async_git() {
+git_precommand() {
     # If in a git directory, show the pending git prompt
     if [[ -d .git ]] || [[ $(git rev-parse --is-inside-work-tree 2>/dev/null) = "true" ]]; then
-        if [[ -z ${CACHED_GIT_PROMPT} ]]; then
+        if [[ -z ${GIT_PROMPT} ]]; then
             GIT_PROMPT="${GIT_PLACEHOLDER}"
         else;
-            GIT_PROMPT="?${CACHED_GIT_PROMPT}"
+            GIT_PROMPT="?${GIT_PROMPT}"
+        fi
+
+        if [[ ! -f $WORKER_TEMP_STUB ]]; then
+            touch $WORKER_TEMP_STUB
+            async_job prompt_worker git_super_status "$(pwd)"
         fi
     # If not, don't show anything
     else;
         GIT_PROMPT=""
     fi
-
-    if [[ ! -f $WORKER_TEMP_STUB ]]; then
-        touch $WORKER_TEMP_STUB
-        async_job prompt_worker git_super_status "$(pwd)"
-    fi
 }
-
-# Register the hook to be run precommand
-add-zsh-hook precmd async_git
-
 
 ### Remaining ZSH prompt setup
 function prompt_char {
-    echo '❯'
+    echo -n '❯'
 }
 
 function virtualenv_info {
-    [ $VIRTUAL_ENV ] && echo '('`basename $VIRTUAL_ENV`') '
+    [ $VIRTUAL_ENV ] && echo -n '('`basename $VIRTUAL_ENV`') '
 }
 
 function trimmed_pwd {
@@ -94,7 +81,7 @@ function trimmed_pwd {
     fi
 
     CWD="${CWD}${GIT_REPO}${WD}%{$reset_color%}"
-    echo $CWD
+    echo -n $CWD
 }
 
 CACHED_HOST_COLOR=""
@@ -109,10 +96,24 @@ function get_user_machine {
 
     if [[ -n $SSH_CLIENT ]] || [[ -n $SSH_TTY ]] || [[ -n $SSH_AUTH_SOCK ]]; then
         # echo "%n@%m"
-        echo "[%{$fg[${CACHED_HOST_COLOR}]%}%m%{$reset_color%}]"
+        echo -n "[%{$fg[${CACHED_HOST_COLOR}]%}%m%{$reset_color%}]"
     fi
 }
 
-# PROMPT='[%{$fg[yellow]%}$(get_user_machine)%{$reset_color%}] %{$fg_bold[green]%}$(trimmed_pwd)%{$reset_color%}$(virtualenv_info)$(prompt_char) '
+### Setup for async git prompt
+# TODO: Move git prompt wrappers into theme possibly? Also collapse git prompt tools to smaller lib
+# TODO: Figure out if this worker stub belongs here (Push down into async or up to higher level)
+WORKER_TEMP_STUB="${HOME}/._rzsh_prompt_worker_stub_$(od -vAn -N4 -tu8 < /dev/urandom | tr -d "[:space:]")"
+# This cleans up the worker stub file on shell exit. This is useful when you exit before a worker returns
+trap "if [[ -f $WORKER_TEMP_STUB ]]; then rm ${WORKER_TEMP_STUB}; fi" EXIT
+
+async_start_worker prompt_worker -n
+async_register_callback prompt_worker git_info_callback
+# Register the hook to be run precommand
+add-zsh-hook precmd git_precommand
+
+ZLE_RPROMPT_INDENT=0
+
 PROMPT='$(get_user_machine) $(trimmed_pwd)$(virtualenv_info)$(prompt_char) '
 RPROMPT='$(get_git_prompt)'
+
