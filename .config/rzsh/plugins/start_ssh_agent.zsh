@@ -15,7 +15,9 @@ function start_new_ssh_agent {
 }
 
 function get_ssh_agent_status {
-    echo "$(ps -f -p "${SSH_AGENT_PID}" | grep "ssh-agent$")"
+    if [[ ! -z "${SSH_AGENT_PID}" ]]; then
+        echo "$(ps -f -p "${SSH_AGENT_PID}" | grep "ssh-agent$")"
+    fi
 }
 
 

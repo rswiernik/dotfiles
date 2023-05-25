@@ -42,7 +42,7 @@ ZSH_LOCAL="$HOME/.zshrc.local"
 [[ -f "$ZSH_LOCAL" ]] && source $ZSH_LOCAL
 
 # Pyenv Config
-if [[ -n "$(which pyenv)" ]]; then
+if [[ $(which pyenv $> /dev/null) ]] ; then
     export PYENV_ROOT="$HOME/.pyenv"
     export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init -)"
