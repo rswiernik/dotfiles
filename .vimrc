@@ -32,21 +32,30 @@ set shiftwidth=4
 set scrolloff=5
 set autoindent
 
-colorscheme elflord
-set hlsearch
+function! SetupColorHighlights()
+    set colorcolumn=100
+    hi ColorColumn ctermfg=black ctermbg=6
 
+    hi TrailingWhitespace ctermbg=red
+    match TrailingWhitespace /\s\+$/
+endfunction
+
+colorscheme elflord
+if ( has('gui_running') ? -1 : (&t_Co ?? 0) >= 256 )
+  hi Normal      ctermfg=231   ctermbg=NONE cterm=NONE
+  hi EndOfBuffer ctermfg=NONE  ctermbg=None cterm=NONE
+  hi StatusLine  ctermfg=227   ctermbg=232  cterm=NONE
+  hi LineNr      ctermfg=227   ctermbg=NONE cterm=NONE
+
+  augroup vimrc_autocmds
+    au!
+    autocmd BufEnter * call SetupColorHighlights()
+  augroup END
+endif
+
+set hlsearch
 set laststatus=2
 set statusline=[%n]\ %<%F\ \ \ [%M%R%H%W%Y][%{&ff}]\ \ %=\ line:%l/%L\ col:%c\ \ \ %p%%\ \ \ @%{strftime(\"%H:%M:%S\")}
-highlight StatusLine ctermbg=16 ctermfg=74
-
-highlight OverLength ctermbg=6 ctermfg=black guibg=#592929
-match OverLength /\%81v.\+/
-
-set colorcolumn=100
-highlight colorcolumn ctermbg=6 ctermfg=black
-
-highlight trailing_whitespace ctermbg=red guibg=red
-match trailing_whitespace /\s\+$/
 
 let g:go_version_warning = 0
 autocmd FileType go nmap <silent> <Leader>d <Plug>(go-def-tab)
