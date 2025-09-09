@@ -47,3 +47,28 @@ if [[ $(which pyenv &> /dev/null) ]] ; then
     export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init -)"
 fi
+
+
+function fix_grpc_packages {
+    pip install --no-binary :all: grpcio --ignore-installed && \
+    pip install --no-binary :all: grpcio-tools --ignore-installed
+}
+
+function close_branch {
+    f_branch="$(git branch --show-current)"
+    git checkout main
+    git branch -D ${f_branch}
+}
+
+function kubectlgetall {
+  for i in $(kubectl api-resources --verbs=list --namespaced -o name | grep -v "events.events.k8s.io" | grep -v "events" | sort | uniq); do
+    echo "Resource:" $i
+    kubectl -n ${1} get --ignore-not-found ${i}
+  done
+}
+
+function kubectlgetallreplicas {
+    kubectl get replicasets -A | awk '{if ($5 ~/0/) next; printf("%65s %4d %4d %4d\n", $2, $3, $4, $5) }'
+}
+
+source <(kubectl completion zsh)
