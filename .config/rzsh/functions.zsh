@@ -18,3 +18,8 @@ function searchzshhistory() {
 function searchbashhistory() {
     grep -rn "$@" ~/.bash_history
 }
+
+function whatmyenv() {
+    echo $PATH | python3 -c 'import sys; i = sys.stdin.readlines()[0]; print("\n".join(i.split(":")));'
+}
+
