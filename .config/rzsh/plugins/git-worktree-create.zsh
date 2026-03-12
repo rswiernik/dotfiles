@@ -29,7 +29,8 @@ worktree_dir="$HOME/tmp/worktrees/$repo_name/$worktree_name"
 
 if [[ -d "$worktree_dir" ]]; then
   echo "Worktree already exists at $worktree_dir"
-  return 1
+  cd "$worktree_dir"
+  return 0
 fi
 
 mkdir -p "$(dirname "$worktree_dir")"
