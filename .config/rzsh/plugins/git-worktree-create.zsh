@@ -8,6 +8,9 @@ gwt() {
     echo ""
     echo "Creates a git worktree at ~/tmp/worktrees/{repo_name}/{branch}"
     echo "Automatically creates a new branch if it doesn't already exist."
+    echo ""
+    echo "Available worktrees:"
+    git worktree list 2>/dev/null || echo "  (not inside a git repository)"
     return 1
   fi
 
