@@ -23,5 +23,3 @@ source $(ls $RZSH_HOME/themes/$RZSH_THEME/*)
 
 source ${RZSH_HOME}/plugins/start_ssh_agent.zsh
 source ${RZSH_HOME}/plugins/git-worktree-create.zsh
-source ${RZSH_HOME}/plugins/git-worktree-close.zsh
-source ${RZSH_HOME}/plugins/git-worktree-main.zsh
