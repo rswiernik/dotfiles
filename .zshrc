@@ -54,6 +54,16 @@ function fix_grpc_packages {
     pip install --no-binary :all: grpcio-tools --ignore-installed
 }
 
+# Flag the current tmux window to draw attention (e.g. "come back to this")
+# The window-activated hook in .tmux.conf will auto-clear it when you return.
+function tmux-flag-window() {
+    tmux set-window-option -t "$(tmux display-message -p -t "$TMUX_PANE" '#{window_id}')" @flagged 1
+}
+
+function tmux-unflag-window() {
+    tmux set-window-option -ut "$(tmux display-message -p -t "$TMUX_PANE" '#{window_id}')" @flagged
+}
+
 function close_branch {
     f_branch="$(git branch --show-current)"
     git checkout main
