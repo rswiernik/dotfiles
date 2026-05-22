@@ -7,12 +7,39 @@ source ".common_funcs"
 remote="${REMOTE:=origin}"
 [[ -n "$(git remote | grep ${remote})" ]] || ( message ${red} "Unable to find remote ${remote}" && exit 255 )
 
-CUR_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+no_worktree=0
+pr_id=""
 
-pr_id="$1"
+for arg in "$@"; do
+    case "$arg" in
+        --no-worktree)
+            no_worktree=1
+            ;;
+        *)
+            pr_id="$arg"
+            ;;
+    esac
+done
+
+if [[ -z "$pr_id" ]]; then
+    echo "Usage: download_pr [--no-worktree] <pr_id>"
+    exit 1
+fi
+
+branch="PR-${pr_id}"
 
 mess "Fetching Pull Request: ${pr_id}"
-git fetch ${remote} pull/${pr_id}/head:PR-${pr_id}
+git fetch ${remote} pull/${pr_id}/head:${branch}
 
-mess "Checking out branch: PR-${pr_id}"
-git checkout PR-${pr_id}
+if [[ $no_worktree -eq 1 ]]; then
+    mess "Checking out branch: ${branch}"
+    git checkout ${branch}
+else
+    repo_root="$(git rev-parse --show-toplevel)"
+    repo_name="$(basename "$repo_root")"
+    worktree_dir="$HOME/tmp/worktrees/$repo_name/${branch}"
+    mkdir -p "$(dirname "$worktree_dir")"
+    mess "Creating worktree at: ${worktree_dir}"
+    git worktree add "$worktree_dir" "$branch"
+    echo "\nWorktree ready: $worktree_dir"
+fi
